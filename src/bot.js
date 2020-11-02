@@ -1,10 +1,13 @@
 require("dotenv").config();
 const discord = require("discord.js");
 const client = new discord.Client();
+const fs = require('fs').promises;
+const path = require('path');
 const PREFIX = process.env.PREFIX;
 client.login(process.env.BOT_TOKEN);
 
 client.on("ready", () => {
+	registerCommands();
 	console.log(`${client.user.tag} has logged in.`);
 });
 
@@ -79,3 +82,7 @@ client.on("message", (message) => {
 		});
 	}
 });
+
+async function registerCommands(dir = 'commands'){
+
+}
