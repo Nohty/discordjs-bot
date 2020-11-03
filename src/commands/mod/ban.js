@@ -36,7 +36,7 @@ module.exports = {
 				const banDmMessage = new MessageEmbed()
 					.setDescription("❌ You Were banned From Olympus!")
 					.setColor("RED")
-					.setThumbnail(user.displayAvatarURL())
+					.setThumbnail(member.displayAvatarURL())
 					.addField("Reason:", `${reson}`)
 					.addField(
 						"If you believe that your ban was unjust or you did not deserve it, please appeal here.",
