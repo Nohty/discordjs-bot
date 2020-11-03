@@ -45,7 +45,7 @@ module.exports = {
 				"Can I appeal a ban?",
 				"We allow all banned users a single appeal. This will be reviewed by our staff who will decide if you can rejoin the server." +
 					`
-                [Ban Appeal](https://forms.gle/iLDhryeeSaq4Gawr9)`
+                [Ban Appeal](https://forms.gle/XiLP1DLgJHkWyjat5)`
 			)
             .setTimestamp()
             .setColor("#7FE5F0");
