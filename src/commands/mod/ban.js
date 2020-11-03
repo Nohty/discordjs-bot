@@ -30,16 +30,45 @@ module.exports = {
 					"You can't ban this user because you the bot has not sufficient permissions!"
 				);
 			const member = message.guild.member(user);
+			const { MessageEmbed } = require("discord.js");
 			if (member) {
-				member
+				const banDmMessage = new MessageEmbed()
+					.setDescription("❌ You Were banned From Olympus!")
+					.setColor("RED")
+					.setThumbnail(user.displayAvatarURL())
+					.addField("Reason:", `${reson}`)
+					.addField(
+						"If you believe that your ban was unjust or you did not deserve it, please appeal here.",
+						"https://forms.gle/iLDhryeeSaq4Gawr9"
+					);
+				await member.send(banDmMessage);
+				await member
 					.ban({
 						reason: reson,
 					})
 					.then(() => {
-						message.channel.send(`Successfully banned ${user.tag} for ${reson}`);
+						const banConfirmationEmbed = new MessageEmbed()
+							.setColor("RED")
+							.setDescription(
+								`✅ ${user.tag} has been successfully banned for ${reson}!`
+							);
+						message.channel.send(banConfirmationEmbed);
+						const banConfirmationEmbedModlog = new MessageEmbed()
+							.setAuthor(
+								`Banned by ${message.author.tag}`,
+								message.author.displayAvatarURL()
+							)
+							.setThumbnail(user.displayAvatarURL())
+							.setColor("RED")
+							.setTimestamp().setDescription(`**Action**: Ban
+						**User**: ${user.tag} (${user.id})
+						**Reason**: ${reson}`);
+						client.channels.cache
+							.get("767378847636127744")
+							.send(banConfirmationEmbedModlog);
 					})
 					.catch((err) => {
-						message.channel.send("I was unable to ban the member");
+						message.channel.cache.send("I was unable to ban the member");
 						console.error(err);
 					});
 			} else {
