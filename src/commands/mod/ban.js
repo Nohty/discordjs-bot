@@ -1,82 +1,83 @@
 module.exports = {
 	run: async (client, message, args) => {
-		if (!message.member.hasPermission("BAN_MEMBERS")) {
-			message.channel.send("You don't have permission to use that command.");
-		} else {
-			let reson = "";
-			if (args.length === 0) {
-				message.channel.send("You need to specify a member to ban.");
-				return;
-			} else if (args.length === 1) {
-				reson = "None given";
-			} else {
-				reson = args.slice(1).join(" ");
-			}
-			let user = message.mentions.users.first();
-			if (!user) {
-				try {
-					if (!message.guild.members.fetch(args[0]))
-						throw new Error("Couldn' get a Discord user with this userID!");
-					user = await message.guild.members.fetch(args[0]);
-				} catch (err) {
-					console.log(err);
-					return message.reply("Couldn' get a Discord user with this userID!");
+		if (!message.member.hasPermission(`BAN_MEMBERS`))
+			return message.reply(`I am sorry, but you can not use this command.`);
+		if (!message.guild.me.hasPermission(`BAN_MEMBERS`))
+			return message.reply(`I am sorry, but I can not ban members.`);
+
+		function getUser(mention) {
+			if (!mention) return;
+			if (mention.startsWith(`<@`) && mention.endsWith(`>`)) {
+				mention = mention.slice(2, -1);
+				if (mention.startsWith(`!`)) {
+					mention = mention.slice(1);
 				}
-			}
-			if (user === message.author)
-				return message.channel.send("You can't ban yourself");
-			if (!message.guild.member(user).bannable)
-				return message.reply(
-					"You can't ban this user because you the bot has not sufficient permissions!"
-				);
-			const member = message.guild.member(user);
-			const { MessageEmbed } = require("discord.js");
-			if (member) {
-				console.log(user.avatarURL());
-				const banDmMessage = new MessageEmbed()
-					.setDescription("❌ You Were banned From Olympus!")
-					.setColor("RED")
-					.setThumbnail(user.displayAvatarURL())
-					.addField("Reason:", `${reson}`)
-					.addField(
-						"If you believe that your ban was unjust or you did not deserve it, please appeal here.",
-						"https://forms.gle/iLDhryeeSaq4Gawr9"
-					);
-				await member.send(banDmMessage);
-				await member
-					.ban({
-						reason: reson,
-					})
-					.then(() => {
-						const banConfirmationEmbed = new MessageEmbed()
-							.setColor("RED")
-							.setDescription(
-								`✅ ${user.tag} has been successfully banned for ${reson}!`
-							);
-						message.channel.send(banConfirmationEmbed);
-						const banConfirmationEmbedModlog = new MessageEmbed()
-							.setAuthor(
-								`Banned by ${message.author.tag}`,
-								message.author.displayAvatarURL()
-							)
-							.setThumbnail(user.displayAvatarURL())
-							.setColor("RED")
-							.setTimestamp().setDescription(`**Action**: Ban
-						**User**: ${user.tag} (${user.id})
-						**Reason**: ${reson}`);
-						client.channels.cache
-							.get("767378847636127744")
-							.send(banConfirmationEmbedModlog);
-					})
-					.catch((err) => {
-						message.channel.cache.send("I was unable to ban the member");
-						console.error(err);
-					});
-			} else {
-				message.channel.send("That user isn't in this guild!");
-			}
+				return client.users.cache.get(mention);
+			} else return client.users.cache.get(mention);
 		}
+		let user = getUser(args[0]);
+		if (!user)
+			return message.channel.send(
+				`Member not found. Please specify a valid User ID or mention the person you would like to ban.`
+			);
+		let member = message.guild.member(user);
+		if (!member)
+			return message.channel.send(
+				`User not found. Please specify a valid User ID or mention the person you would like to ban.`
+			);
+		if (member.hasPermission(`BAN_MEMBERS`))
+			return message.channel.send(
+				"❌ That user is a mod/admin, I can't do that."
+			);
+		let reason = args.slice(1).join(" ");
+		if (!reason) reason = `No reason specified.`;
+		const { MessageEmbed } = require("discord.js");
+		const channel = message.guild.channels.cache.get("767378847636127744");
+		const banDmEmbed = new MessageEmbed()
+			.setAuthor("Olympus Moderation Team", client.user.avatarURL())
+			.setThumbnail(client.user.avatarURL())
+			.addField(
+				"You have been banned from the Olympus server!",
+				`**Reason:**
+        ${reason}`
+			)
+			.addField(
+				"Can I appeal a ban?",
+				"We allow all banned users a single appeal. This will be reviewed by our staff who will decide if you can rejoin the server." +
+					`
+                [Ban Appeal](https://forms.gle/iLDhryeeSaq4Gawr9)`
+			)
+            .setTimestamp()
+            .setColor("#7FE5F0");
+
+		await member
+			.send(banDmEmbed)
+			.catch((err) =>
+				message.channel.send(`⚠ Unable to contact **${user.tag}**.`)
+			);
+		await member
+			.ban({
+				reason: reason,
+			})
+			.then(() => {
+                const banEmbed = new MessageEmbed()
+                .setDescription(`✅ ***${member.user.tag} was banned***`)
+                .setColor("GREEN");
+				message.channel.send(banEmbed);
+				const banLogEmbed = new MessageEmbed()
+					.setAuthor("Member Banned", member.user.avatarURL())
+					.setThumbnail(member.user.avatarURL())
+					.setColor("RED")
+					.setTimestamp()
+                    .addField("User", `<@${member.user.id}> ${member.user.tag}`)
+                    .addField("Banned By", `<@${message.author.id}>`)
+					.addField("Reason", reason);
+				channel.send(banLogEmbed);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	},
 	aliases: [],
-	description: "Bans a guild member by their ID",
+	description: "Bans a guild member by their ID or mention",
 };
