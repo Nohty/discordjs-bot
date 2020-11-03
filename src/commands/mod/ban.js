@@ -32,11 +32,11 @@ module.exports = {
 			const member = message.guild.member(user);
 			const { MessageEmbed } = require("discord.js");
 			if (member) {
-				console.log(user);
+				console.log(user.displayAvatarURL());
 				const banDmMessage = new MessageEmbed()
 					.setDescription("❌ You Were banned From Olympus!")
 					.setColor("RED")
-					.setThumbnail(member.displayAvatarURL())
+					.setThumbnail(user.displayAvatarURL())
 					.addField("Reason:", `${reson}`)
 					.addField(
 						"If you believe that your ban was unjust or you did not deserve it, please appeal here.",
