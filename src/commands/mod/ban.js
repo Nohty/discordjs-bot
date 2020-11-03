@@ -32,6 +32,7 @@ module.exports = {
 			const member = message.guild.member(user);
 			const { MessageEmbed } = require("discord.js");
 			if (member) {
+				console.log(member);
 				const banDmMessage = new MessageEmbed()
 					.setDescription("❌ You Were banned From Olympus!")
 					.setColor("RED")
