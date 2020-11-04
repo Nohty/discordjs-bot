@@ -53,7 +53,7 @@ module.exports = {
 		await member
 			.send(banDmEmbed)
 			.catch((err) =>
-				message.channel.send(`⚠ Unable to contact **${user.tag}**.`)
+				channel.send(`⚠ Unable to contact **${user.tag}**.`)
 			);
 		await member
 			.ban({
