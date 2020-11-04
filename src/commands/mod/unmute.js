@@ -18,12 +18,12 @@ module.exports = {
 		let user = getUser(args[0]);
 		if (!user)
 			return message.channel.send(
-				`User not found. Please specify a valid User ID or mention the person you would like to ban.`
+				`User not found. Please specify a valid User ID or mention the person you would like to unmute.`
 			);
 		let member = message.guild.member(user);
 		if (!member)
 			return message.channel.send(
-				`Member not found. Please specify a valid User ID or mention the person you would like to ban.`
+				`Member not found. Please specify a valid User ID or mention the person you would like to unmute.`
 			);
 	},
 	aliases: [],
