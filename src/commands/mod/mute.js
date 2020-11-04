@@ -25,6 +25,10 @@ module.exports = {
 			return message.channel.send(
 				`Member not found. Please specify a valid User ID or mention the person you would like to ban.`
 			);
+		if (member.hasPermission(`KICK_MEMBERS`))
+			return message.channel.send(
+				"❌ That user is a mod/admin, I can't do that."
+			);
 	},
 	aliases: [],
 	description: "Mutes a user",
