@@ -12,8 +12,8 @@ module.exports = {
 				if (mention.startsWith(`!`)) {
 					mention = mention.slice(1);
 				}
-				return client.users.fetch(mention);
-			} else return client.users.fetch(mention);
+				return client.users.cache.get(mention);
+			} else return client.users.cache.get(mention);
 		}
 		let user = getUser(args[0]);
 		if (!user)
