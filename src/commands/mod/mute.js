@@ -37,6 +37,20 @@ module.exports = {
 		if (!mutedRole) return message.channel.send("Muted role not found.");
 		if (member.roles.cache.find((r) => r.id === mutedRole.id))
 			return message.channel.send("This user is already muted");
+		const muteDmEmbed = new MessageEmbed()
+			.setAuthor("Olympus Moderation Team", client.user.avatarURL())
+			.setThumbnail(client.user.avatarURL())
+			.addField(
+				"You have been Muted on the Olympus server!",
+				`**Reason:**
+                ${reason}`
+			)
+			.setTimestamp()
+            .setColor("#7FE5F0");
+		await member.send(muteDmEmbed).catch((err) => {
+			channel.send(`⚠ Unable to contact **${user.tag}**.`);
+			console.log(err);
+		});
 		await member.roles
 			.add(mutedRole)
 			.then(() => {
