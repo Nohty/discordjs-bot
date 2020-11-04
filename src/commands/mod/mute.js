@@ -29,6 +29,34 @@ module.exports = {
 			return message.channel.send(
 				"❌ That user is a mod/admin, I can't do that."
 			);
+		let reason = args.slice(1).join(" ");
+		if (!reason) reason = `No reason specified.`;
+		const { MessageEmbed } = require("discord.js");
+		const channel = message.guild.channels.cache.get("773564024930697267");
+		let mutedRole = message.guild.roles.cache.get("773564837267505192");
+		if (!mutedRole) return message.channel.send("Muted role not found.");
+		if (member.roles.cache.find((r) => r.id === mutedRole.id))
+			return message.channel.send("This user is already muted");
+		await member.roles
+			.add(mutedRole)
+			.then(() => {
+				const muteEmbed = new MessageEmbed()
+					.setDescription(`✅ ***${member.user.tag} was muted***`)
+					.setColor("GREEN");
+				message.channel.send(muteEmbed);
+				const muteLogEmbed = new MessageEmbed()
+					.setAuthor("Member Muted", member.user.avatarURL())
+					.setThumbnail(member.user.avatarURL())
+					.setColor("ORANGE")
+					.setTimestamp()
+					.addField("User", `<@${member.user.id}> ${member.user.tag}`)
+					.addField("Muted By", `<@${message.author.id}>`)
+					.addField("Reason", reason);
+				channel.send(muteLogEmbed);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	},
 	aliases: [],
 	description: "Mutes a user",
