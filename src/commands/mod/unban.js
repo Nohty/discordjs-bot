@@ -14,7 +14,12 @@ module.exports = {
 				return client.users.cache.get(mention);
 			} else return client.users.cache.get(mention);
 		}
+		let user = getUser(args[0]);
+		if (!user)
+			return message.channel.send(
+				`Member not found. Please specify a valid User ID or mention the person you would like to ban.`
+			);
 	},
 	aliases: [],
-	description: "Unbans a guild member by their ID",
+	description: "Unbans a guild member by their ID or mention",
 };
