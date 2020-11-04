@@ -34,7 +34,7 @@ module.exports = {
 		const { MessageEmbed } = require("discord.js");
 		const channel = message.guild.channels.cache.get("767378847636127744");
 		let mutedRole = message.guild.roles.cache.get("767751500600049735");
-		if (!mutedRole) return message.channel.send("Muted role not found.");
+		if (!mutedRole) return message.channel.send("Mute role not found.");
 		if (member.roles.cache.find((r) => r.id === mutedRole.id))
 			return message.channel.send("This user is already muted");
 		const muteDmEmbed = new MessageEmbed()
