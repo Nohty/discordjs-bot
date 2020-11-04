@@ -17,7 +17,7 @@ module.exports = {
 		let user = await getUser(args[0]);
 		if (!user)
 			return message.channel.send(
-				`Member not found. Please specify a valid User ID or mention the person you would like to ban.`
+				`Member not found. Please specify a valid User ID or mention the person you would like to unban.`
 			);
 		try {
 			const { MessageEmbed } = require("discord.js");
