@@ -39,7 +39,7 @@ module.exports = {
 			.addField(
 				"You have been banned from the Olympus server!",
 				`**Reason:**
-        ${reason}`
+        		${reason}`
 			)
 			.addField(
 				"Can I appeal a ban?",
