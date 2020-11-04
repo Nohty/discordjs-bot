@@ -44,11 +44,10 @@ module.exports = {
 			.setTimestamp()
 			.setColor("#7FE5F0");
 
-		await member
-			.send(kickDmEmbed)
-			.catch((err) =>
-				message.channel.send(`⚠ Unable to contact **${user.tag}**.`)
-			);
+		await member.send(kickDmEmbed).catch((err) => {
+			channel.send(`⚠ Unable to contact **${user.tag}**.`);
+			console.log(err);
+		});
 		await member
 			.kick(reason)
 			.then(() => {

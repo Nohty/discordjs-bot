@@ -47,30 +47,29 @@ module.exports = {
 					`
                 [Ban Appeal](https://forms.gle/XiLP1DLgJHkWyjat5)`
 			)
-            .setTimestamp()
-            .setColor("#7FE5F0");
+			.setTimestamp()
+			.setColor("#7FE5F0");
 
-		await member
-			.send(banDmEmbed)
-			.catch((err) =>
-				channel.send(`⚠ Unable to contact **${user.tag}**.`)
-			);
+		await member.send(banDmEmbed).catch((err) => {
+			channel.send(`⚠ Unable to contact **${user.tag}**.`);
+			console.log(err);
+		});
 		await member
 			.ban({
 				reason: reason,
 			})
 			.then(() => {
-                const banEmbed = new MessageEmbed()
-                .setDescription(`✅ ***${member.user.tag} was banned***`)
-                .setColor("GREEN");
+				const banEmbed = new MessageEmbed()
+					.setDescription(`✅ ***${member.user.tag} was banned***`)
+					.setColor("GREEN");
 				message.channel.send(banEmbed);
 				const banLogEmbed = new MessageEmbed()
 					.setAuthor("Member Banned", member.user.avatarURL())
 					.setThumbnail(member.user.avatarURL())
 					.setColor("RED")
 					.setTimestamp()
-                    .addField("User", `<@${member.user.id}> ${member.user.tag}`)
-                    .addField("Banned By", `<@${message.author.id}>`)
+					.addField("User", `<@${member.user.id}> ${member.user.tag}`)
+					.addField("Banned By", `<@${message.author.id}>`)
 					.addField("Reason", reason);
 				channel.send(banLogEmbed);
 			})
