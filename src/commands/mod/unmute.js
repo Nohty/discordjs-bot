@@ -29,6 +29,12 @@ module.exports = {
 			return message.channel.send(
 				"❌ That user is a mod/admin, I can't do that."
 			);
+		const { MessageEmbed } = require("discord.js");
+		const channel = message.guild.channels.cache.get("767378847636127744");
+		let mutedRole = message.guild.roles.cache.get("767751500600049735");
+		if (!mutedRole) return message.channel.send("Mute role not found.");
+		if (!member.roles.cache.find((r) => r.id === mutedRole.id))
+			return message.channel.send("This user is not muted");
 	},
 	aliases: [],
 	description: "Unmutes a user",
