@@ -16,7 +16,8 @@ module.exports = {
     if (amount < 1)
       return message.reply("You cannot remove less than 1 message.");
     try {
-      message.channel.bulkDelete(amount + 1);
+      amount++;
+      message.channel.bulkDelete(amount);
     } catch (err) {
       return message.reply("An error occurred when removing the messages");
     }
