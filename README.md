@@ -24,7 +24,7 @@ To install discordjs-bot, follow these steps:
 BOT_TOKEN=<Your bot token>
 PREFIX=<Your prefix>
 ```
-## Using <project_name>
+## Using discordjs-bot
 
 To use discordjs-bot, follow these steps:
 
