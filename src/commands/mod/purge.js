@@ -36,7 +36,7 @@ module.exports = {
     }
   },
   aliases: ["clear"],
-  description: "removes multiple messages from a channel (deafult 5)",
+  description: "removes multiple messages from a channel (default 5)",
 };
 
 function checkAmount(message, args) {
